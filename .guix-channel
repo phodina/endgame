@@ -1,0 +1,8 @@
+;; -*- mode: scheme; -*-
+
+(channel
+ (version 0)
+ (news-file "news.txt")
+ (directory "guix-channel")
+ (url "https://github.com/phodina/endgame")) ; the primary URL
+

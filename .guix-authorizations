@@ -1,0 +1,6 @@
+;; This is the list of OpenPGP keys currently authorized to sign commits in
+;; this repository.
+
+(authorizations
+  (version 0)
+  (("418E BDDC 2C3B 1F72 6844  B7C6 7EBE C331 8DB7 196D" (name "phodina"))))
