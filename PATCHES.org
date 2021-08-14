@@ -97,3 +97,10 @@ Open-source re-implementation of The Elder Scrolls: Arena
 - [X] patch sent <Sat Sep 18 2021>
 - [ ] patch-applied-upstream <>
   + [[https://issues.guix.gnu.org/50656]]
+** TODO [[endgame/packages/re3.scm][re3]] [0/4]
+Fully reversed source code for GTA III and GTA VC
+- [ ] issue submitted <Sat Aug 14 2021>
+  + https://gitlab.com/nonguix/nonguix/-/issues/135
+- [ ] packed <>
+- [ ] patch sent <>
+- [ ] patch-applied-upstream <>

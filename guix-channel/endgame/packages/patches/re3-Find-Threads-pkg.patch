@@ -1,0 +1,22 @@
+From 3634cf6b20dbca9a90e515d301ea9fde50251703 Mon Sep 17 00:00:00 2001
+From: Petr Hodina <phodina@protonmail.com>
+Date: Mon, 12 Jul 2021 19:46:21 +0200
+Subject: [PATCH] Find Threads pkg
+
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5396d3b4..2f37580f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -28,6 +28,8 @@ if(NOT ${PROJECT}_AUDIO IN_LIST ${PROJECT}_AUDIOS)
+     message(FATAL_ERROR "Illegal ${PROJECT}_AUDIO=${${PROJECT}_AUDIO}")
+ endif()
+ 
++find_package(Threads)
++
+ option(${PROJECT}_VENDORED_LIBRW "Use vendored librw" ON)
+ if(${PROJECT}_VENDORED_LIBRW)
+     add_subdirectory(vendor/librw)
+-- 
+2.31.1
+
