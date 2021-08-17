@@ -1,0 +1,19 @@
+From b264971ea01af5472a39ffd257ce2b335bfe23f9 Mon Sep 17 00:00:00 2001
+From: Petr Hodina <phodina@protonmail.com>
+Date: Tue, 17 Aug 2021 23:07:28 +0200
+Subject: [PATCH] Fix args to cut command in 99-realsense-libusb.rules
+
+
+diff --git a/config/99-realsense-libusb.rules b/config/99-realsense-libusb.rules
+index ca9dd16dc..85db29cac 100644
+--- a/config/99-realsense-libusb.rules
++++ b/config/99-realsense-libusb.rules
+@@ -78,4 +78,4 @@ KERNEL=="iio*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b68", MODE:="0777",
+ DRIVER=="hid_sensor*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0b68", RUN+="/bin/sh -c ' chmod -R 0777 /sys/%p && chmod 0777 /dev/%k'"
+ 
+ # For products with motion_module, if (kernels is 4.15 and up) and (device name is "accel_3d") wait, in another process, until (enable flag is set to 1 or 200 mSec passed) and then set it to 0.
+-KERNEL=="iio*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0ad5|0afe|0aff|0b00|0b01|0b3a|0b3d|0b64|0b68", RUN+="/bin/sh -c '(major=`uname -r | cut -d \".\" -f1` && minor=`uname -r | cut -d \".\" -f2` && (([ $major -eq 4 ] && [ $minor -ge 15 ]) || [ $major -ge 5 ])) && (enamefile=/sys/%p/name && [ `cat $enamefile` = \"accel_3d\" ]) && enfile=/sys/%p/buffer/enable && echo \"COUNTER=0; while [ \$COUNTER -lt 20 ] && grep -q 0 $enfile; do sleep 0.01; COUNTER=\$((COUNTER+1)); done && echo 0 > $enfile\" | at now'"
++KERNEL=="iio*", ATTRS{idVendor}=="8086", ATTRS{idProduct}=="0ad5|0afe|0aff|0b00|0b01|0b3a|0b3d|0b64|0b68", RUN+="/bin/sh -c '(major=`uname -r | cut -d '.' -f1` && minor=`uname -r | cut -d '.' -f2` && (([ $major -eq 4 ] && [ $minor -ge 15 ]) || [ $major -ge 5 ])) && (enamefile=/sys/%p/name && [ `cat $enamefile` = \"accel_3d\" ]) && enfile=/sys/%p/buffer/enable && echo \"COUNTER=0; while [ \$COUNTER -lt 20 ] && grep -q 0 $enfile; do sleep 0.01; COUNTER=\$((COUNTER+1)); done && echo 0 > $enfile\" | at now'"
+-- 
+2.32.0
+
