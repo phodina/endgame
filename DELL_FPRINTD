@@ -1,0 +1,12 @@
+# Goodix
+https://discourse.nixos.org/t/libfprint-2-tod1-xps9300-bin/7888/2
+https://git.launchpad.net/~oem-solutions-engineers/libfprint-2-tod1-goodix/+git/libfprint-2-tod1-goodix/
+https://gitlab.collabora.com/ao2/goodix_fp_dump
+https://gitlab.freedesktop.org/libfprint/libfprint/-/issues/376
+https://gitlab.freedesktop.org/libfprint/wiki/-/wikis/Unsupported-Devices
+http://dell.archive.canonical.com/pool/public/libf/libfprint-2-tod1-goodix/
+https://wiki.archlinux.org/title/Fprint
+
+
+# BIOS power management
+https://archlinux.org/packages/community/any/throttled/
