@@ -1,0 +1,99 @@
+#+TITLE: Guix PATCHES
+#+AUTHOR: Petr Hodina
+
+* Packages - [ ][2/16][12%]
+** [ ] [[endgame/packages/rot8.scm][rust-rot8]] [2/3]
+Screen rotation daemon
+- [X] packed <Mon Jul 19 2021>
+- [X] patch sent <Fri Jul 23 2021>
+- [ ] patch-applied-upstream <>
+  + https://issues.guix.gnu.org/49703
+** [ ] [[endgame/packages/swaylock.scm][swaylock-effects]] [2/3]
+Screen locking utility for Wayland compositor with fancy effects
+- [X] packed <Fri Jul 23 2021>
+- [X] patch sent <Fri Jul 23 2021>
+- [ ] patch-applied-upstream <>
+  + https://issues.guix.gnu.org/49702
+** [ ] [[endgame/packages/bolt.scm][bolt]] [2/3]
+Userspace system daemon to enable security levels for Thunderbolt on GNU/Linux.
+- [X] packed <Mon Jul 12 2021>
+- [X] patch sent <Thu Jul 15 2021>
+- [ ] patch-applied-upstream <>
+  + https://issues.guix.gnu.org/49578
+** [ ] [[endgame/packages/librealsense.scm][librealsense]] [2/3]
+Intel RealSense SDK
+- [X] packed <Thu Jun 24 2021>
+- [X] patch sent <Mon Aug 9 2021>
+- [ ] patch-applied-upstream <>
+  + https://issues.guix.gnu.org/49970
+** [ ] [[endgame/packages/pirate-get.scm][python-pirate-get]] [2/3]
+Command line interface for The Pirate Bay
+- [X] packed <Sun Jul 18 2021>
+- [X] patch sent <Sun Jul 18 2021>
+- [ ] patch-applied-upstream <>
+  + https://issues.guix.gnu.org/49619
+** [ ] [[endgame/packages/mjpg.scm][mjpg-streamer]] [2/3]
+Command line interface for The Pirate Bay
+- [X] packed <Sat Jul 31 2021>
+- [X] patch sent <Sat Sep 18 2021>
+- [ ] patch-applied-upstream <>
+  +  [[https://issues.guix.gnu.org/50652]]
+** [X] [[endgame/packages/date2name.scm][python-date2name]] [3/3]
+Handling time-stamps and date-stamps in file names
+- [X] packed <Sun Jul 18 2021>
+- [X] patch sent <Thu Jul 15 2021>
+- [X] patch-applied-upstream <Wed Sep 1 2021>
+  + https://issues.guix.gnu.org/49575
+** [ ] [[endgame/packages/colorscript.scm][colorscript]] [2/3]
+Collection of terminal color scripts
+- [X] packed <Sun Aug 8 2021>
+- [X] patch sent <Sun Aug 8 2021>
+- [ ] patch-applied-upstream <>
+  + https://issues.guix.gnu.org/49942
+** [ ] [[endgame/packages/git-issues.scm][git-issues]] [2/3]
+Git-based decentralized issue management
+- [X] packed <Sun Jul 18 2021>
+- [X] patch sent <Thu Jul 15 2021>
+- [ ] patch-applied-upstream <>
+  + https://issues.guix.gnu.org/49581
+** [ ] [[endgame/packages/sylish.scm][stylish]] [2/3]
+Wallpaper switching made easy
+- [X] packed <Fri Aug 6 2021>
+- [ ] patch sent <>
+- [ ] patch-applied-upstream <>
+** [X] [[endgame/packages/i3lock-blur.scm][i3lock-blur]] [3/3]
+Lightweight screen locker with transparent blurring background
+- [X] packed <Tue Aug 17 2021>
+- [X] patch sent <Tue Aug 17 2021>
+- [X] patch-applied-upstream <Mon Sep 13 2021>
+  + https://issues.guix.gnu.org/50095
+** [ ] [[endgame/packages/extractor.scm][python-android-otp-extractor]] [2/3]
+Extracts OTP tokens from rooted Android devices
+- [X] packed <Tue Jul 17 2021>
+- [X] patch sent <Tue Jul 17 2021>
+- [ ] patch-applied-upstream <>
+  + [[https://issues.guix.gnu.org/50100]]
+** [ ] [[file:packages/sdlpop.scm][sdlpop]] [2/3]
+Open-source port of Prince of Persia
+- [X] packed <Wed Sep 15 2021>
+- [X] patch sent <Sat Sep 18 2021>
+- [ ] patch-applied-upstream <>
+  + [[https://issues.guix.gnu.org/50653]]
+** [ ] [[file:packages/falltergeist.scm][falltergeist]] [2/3]
+Opensource crossplatform Fallout 2 game engine
+- [X] packed <Thu Sep 16 2021>
+- [X] patch sent <Sat Sep 18 2021>
+- [ ] patch-applied-upstream <>
+  + [[https://issues.guix.gnu.org/50653]]
+** [ ] [[file:packages/gemrb.scm][gemrb]] [2/3]
+Open-source implementation of Bioware’s 8 Infinity Engine
+- [X] packed <Wed Sep 15 2021>
+- [X] patch sent <Sat Sep 18 2021>
+- [ ] patch-applied-upstream <>
+  + [[https://issues.guix.gnu.org/50653]]
+** [ ] [[file:packages/opentesarena.scm][opentesarena]] [2/3]
+Open-source re-implementation of The Elder Scrolls: Arena
+- [X] packed <Thu Sep 16 2021>
+- [X] patch sent <Sat Sep 18 2021>
+- [ ] patch-applied-upstream <>
+  + [[https://issues.guix.gnu.org/50656]]
