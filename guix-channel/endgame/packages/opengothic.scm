@@ -14,6 +14,39 @@
   #:use-module (guix build-system gnu)
   #:use-module ((guix licenses) #:prefix license:))
 
+(define-public zenlib
+  (let ((commit "a38ad95781565607dac8ccdd06412b60c9612521")
+	(revision "1"))
+(package
+  (name "zenlib")
+  (version "a38ad95781565607dac8ccdd06412b60c9612521")
+  (source (origin
+            (method git-fetch)
+            (uri
+	      (git-reference
+		(url "https://github.com/Try/ZenLib")
+		(commit version)))
+            (sha256
+             (base32
+              "0k0dlmkgn48abi54m9zm9l41jr6qf7zs8syj5k1sx8bpl6j8582j"))))
+  (build-system cmake-build-system)
+  (arguments '(#:tests? #f))
+; TODO: Add tests to main CMake
+;  (arguments
+;    `(#:phases
+;      (modify-phases %standard-phases
+;       (add-before 'check 'chdir-to-tests
+;         (lambda _
+;	   (chdir "tests"))))))
+  (native-inputs
+    `(("pkg-config" ,pkg-config)))
+  (inputs
+    `(("libsquish" ,libsquish)))
+  (synopsis "Loading of proprietary formats used by the engine used by the games Gothic and Gothic II")
+  (description "Loading of proprietary formats used by the engine of the games Gothic and Gothic II.")
+  (home-page "https://github.com/Try/ZenLib")
+  (license license:expat))))
+
 (define-public tempest
   (let ((commit "bbb4c2072ea9b9188bd9d68e06d0ed85ed30c578")
         (revision "1"))
