@@ -14,6 +14,31 @@
   #:use-module (guix build-system gnu)
   #:use-module ((guix licenses) #:prefix license:))
 
+(define-public opengothic
+(package
+  (name "opengothic")
+  (version "v0.48")
+  (source (origin
+            (method git-fetch)
+            (uri
+	      (git-reference
+		(url "https://github.com/Try/OpenGothic")
+		(commit version)))
+            (sha256
+             (base32
+              "1ll816jxpkcp03y0315mzad8rqb5kz7yf63861fqp37fjm66s7xz"))))
+  (build-system cmake-build-system)
+  (arguments
+    '(#:tests? #f))
+  (native-inputs
+    `(("pkg-config" ,pkg-config)))
+  (inputs
+    `(("bullet" ,bullet) ("zenlib" ,zenlib) ("tempest" ,tempest)))
+  (synopsis "Reimplementation of Gothic 2 Notr")
+  (description "Open source remake of Gothic 2: Night of the raven. Motivation: The original Gothic 1 and Gothic 2 are still great games, but it not easy to make them work on modern systems. The goal of this project is to make a feature complete Gothic client compatible with the game and mods.")
+  (home-page "https://github.com/Try/OpenGothic")
+  (license license:expat)))
+
 (define-public zenlib
   (let ((commit "a38ad95781565607dac8ccdd06412b60c9612521")
 	(revision "1"))
