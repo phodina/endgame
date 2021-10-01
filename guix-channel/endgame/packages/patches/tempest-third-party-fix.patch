@@ -1,0 +1,102 @@
+From 8a771cab1ac4c93124f22c0fab21ebb3503e27d1 Mon Sep 17 00:00:00 2001
+From: Petr Hodina <phodina@protonmail.com>
+Date: Fri, 1 Oct 2021 11:32:26 +0200
+Subject: [PATCH] Guix patch
+
+
+diff --git a/Engine/CMakeLists.txt b/Engine/CMakeLists.txt
+index b7b88d3..e13af7b 100644
+--- a/Engine/CMakeLists.txt
++++ b/Engine/CMakeLists.txt
+@@ -54,39 +54,12 @@ if(WIN32)
+   find_package(D3D12)
+ endif()
+ 
+-### zlib
+-add_subdirectory("thirdparty/zlib")
+-set(ZLIB_LIBRARY zlibstatic)
+-set(ZLIB_INCLUDE_DIR "thirdparty/zlib")
+-target_include_directories(${PROJECT_NAME} PRIVATE "thirdparty/zlib")
+-
+-### squish
+-target_include_directories(${PROJECT_NAME} PRIVATE "thirdparty/squish")
+-
+-### libpng16
+-set(PNG_SHARED       OFF CACHE INTERNAL "")
+-set(PNG_STATIC       ON  CACHE INTERNAL "")
+-set(PNG_TESTS        OFF CACHE INTERNAL "")
+-set(PNG_BUILD_ZLIB   ON  CACHE INTERNAL "")
+-set(SKIP_INSTALL_ALL ON  CACHE INTERNAL "")
+-add_subdirectory("thirdparty/libpng")
+-target_include_directories(png_static PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+-target_include_directories(png_static PRIVATE "thirdparty/zlib")
+-target_include_directories(${PROJECT_NAME} PRIVATE "thirdparty/libpng")
+-target_link_libraries(${PROJECT_NAME} PRIVATE png_static)
+ 
+ ### stb
+ add_definitions(-DSTB_IMAGE_IMPLEMENTATION)
+ add_definitions(-DSTB_TRUETYPE_IMPLEMENTATION)
+ add_definitions(-DSTB_IMAGE_WRITE_IMPLEMENTATION)
+ 
+-### OpenAl
+-add_definitions(-DAL_ALEXT_PROTOTYPES)
+-add_subdirectory("thirdparty/openal")
+-target_link_libraries(${PROJECT_NAME} PRIVATE OpenAL)
+-target_include_directories(${PROJECT_NAME} PRIVATE
+-  "thirdparty/openal/include"
+-  "thirdparty/openal/openal32/include")
+ if(WIN32)
+   target_link_libraries(${PROJECT_NAME} PRIVATE winmm)
+ endif()
+@@ -110,9 +83,6 @@ if(WIN32 AND TEMPEST_BUILD_DIRECTX12)
+   target_link_libraries(${PROJECT_NAME} PRIVATE d3dcompiler dxgi)
+ endif()
+ 
+-### Spirv-cross
+-add_subdirectory("thirdparty/spirv_cross")
+-
+ ### Shaders
+ set(GEN_SHADERS_HEADER "${PROJECT_BINARY_DIR}/sprv/builtin_shader.h")
+ 
+@@ -121,12 +91,6 @@ file(GLOB SHADER_SOURCES
+   "${PROJECT_SOURCE_DIR}/shaders/*.frag"
+   "${PROJECT_SOURCE_DIR}/shaders/*.comp")
+ 
+-# GLSL to SPIRV compiler
+-find_program(GLSLANGVALIDATOR glslangValidator "/opt/homebrew/bin")
+-if(NOT GLSLANGVALIDATOR)
+-  message(FATAL_ERROR "glslangValidator required")
+-endif()
+-
+ function(add_shader OUTPUT SOURCE)
+   set(OUTPUT_FILE "${PROJECT_BINARY_DIR}/sprv/${OUTPUT}")
+   set(SOURCE_FILE "${PROJECT_SOURCE_DIR}/shaders/${SOURCE}")
+diff --git a/Engine/gapi/shaderreflection.cpp b/Engine/gapi/shaderreflection.cpp
+index bf3f423..0ca7aed 100644
+--- a/Engine/gapi/shaderreflection.cpp
++++ b/Engine/gapi/shaderreflection.cpp
+@@ -3,7 +3,7 @@
+ #include <Tempest/Except>
+ #include <algorithm>
+ 
+-#include "thirdparty/spirv_cross/spirv_common.hpp"
++#include <spirv_cross/spirv_common.hpp>
+ 
+ using namespace Tempest;
+ using namespace Tempest::Detail;
+diff --git a/Engine/gapi/shaderreflection.h b/Engine/gapi/shaderreflection.h
+index 989ccf5..b063c5a 100644
+--- a/Engine/gapi/shaderreflection.h
++++ b/Engine/gapi/shaderreflection.h
+@@ -3,7 +3,7 @@
+ #include <Tempest/AbstractGraphicsApi>
+ #include <vector>
+ 
+-#include "thirdparty/spirv_cross/spirv_cross.hpp"
++#include <spirv_cross/spirv_cross.hpp>
+ 
+ namespace Tempest {
+ namespace Detail {
+-- 
+2.32.0
+

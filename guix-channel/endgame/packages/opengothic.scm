@@ -3,6 +3,9 @@
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages game-development)
   #:use-module (gnu packages vulkan)
+  #:use-module (gnu packages audio)
+  #:use-module (gnu packages compression)
+  #:use-module (gnu packages image)
   #:use-module (gnu packages gl)
   #:use-module (gnu packages xorg)
   #:use-module (gnu packages linux)
@@ -10,6 +13,57 @@
   #:use-module (guix build-system cmake)
   #:use-module (guix build-system gnu)
   #:use-module ((guix licenses) #:prefix license:))
+
+(define-public tempest
+  (let ((commit "bbb4c2072ea9b9188bd9d68e06d0ed85ed30c578")
+        (revision "1"))
+(package
+  (name "tempest")
+  (version "71c03d2cb35875d6d479113f86e47f79e15ba054")
+  (source (origin
+            (method git-fetch)
+            (uri
+	      (git-reference
+		(url "https://github.com/Try/Tempest")
+		(commit version)))
+	    (patches '("endgame/packages/patches/tempest-third-party-fix.patch"))
+            (modules '((guix build utils)))
+            (snippet
+             '(begin
+               (for-each delete-file-recursively
+               '("Engine/thirdparty/zlib"
+                 "Engine/thirdparty/openal"
+                 "Engine/thirdparty/libpng"
+                 "Engine/thirdparty/squish"
+                 "Engine/thirdparty/spirv_cross"))))
+            (sha256
+             (base32
+              "1rl4liwbvb5srg8xa0j6r0iy12ri5ymgjdwlcdq0n6zjcwkm739g"))))
+  (build-system cmake-build-system)
+  (arguments
+    '(#:tests? #f
+      #:phases (modify-phases %standard-phases
+        (add-before 'configure 'chdir
+        (lambda _
+        (chdir "Engine")
+         #t)))))
+  (native-inputs
+    `(("pkg-config" ,pkg-config)
+      ("spirv-cross" ,spirv-cross)
+      ("vulkan-headers" ,vulkan-headers)))
+  (inputs `(("glslang" ,glslang)
+	    ("alsa-lib" ,alsa-lib)
+	    ("glslang" ,glslang)
+	    ("openal" ,openal)
+	    ("libsquish" ,libsquish)
+	    ("vulkan-loader" ,vulkan-loader)
+	    ("libpng" ,libpng)
+	    ("zlib" ,zlib)
+	    ("libx11" ,libx11)))
+  (synopsis "Crossplatform 3d engine")
+  (description "Tempest is an open-source, simple, cross-platform graphics engine written in modern C++14. Main idea behind this engine is to provide a low-level GPU-programming concepts, like Ubo, Vbo, Ssbo, in convenient C++ packaging, with RAII, types and templates.")
+  (home-page "https://github.com/Try/Tempest")
+  (license license:expat))))
 
 (define-public tinysoundfont
   (let ((commit "bf574519e601202c3a9d27a74f345921277eed39")
