@@ -2,9 +2,11 @@
   #:use-module (guix packages)
   #:use-module (gnu packages)
   #:use-module (gnu packages autotools)
+  #:use-module (gnu packages compression)
   #:use-module (gnu packages libedit)
   #:use-module (gnu packages ncurses)
   #:use-module (gnu packages pkg-config)
+  #:use-module (gnu packages linux)
   #:use-module (guix git-download)
   #:use-module (guix build-system gnu)
   #:use-module ((guix licenses) #:prefix license:))
@@ -36,4 +38,39 @@ identification EEPROMs on NVIDIA Jetson/Tegra hardware.  Works with EEPROMs
 directly accessible through an EEPROM driver (for read/write access), or via
 userspace I2C transactions (for reads only).")
   (home-page "https://github.com/OE4T/tegra-eeprom-tool")
+  (license license:expat)))
+
+(define-public tegra-boot-tools
+(package
+  (name "tegra-boot-tools")
+  (version "2.5.1")
+  (source (origin
+            (method git-fetch)
+            (uri (git-reference
+             (url "https://github.com/OE4T/tegra-boot-tools")
+             (commit (string-append "v" version))))
+            (file-name (git-file-name name version))
+            (sha256
+             (base32
+              "13r7lzydp42rj2gdb1qpmq5kmdigwyqwh776hhg03vh7jczrr73y"))))
+  (build-system gnu-build-system)
+  (native-inputs `(("pkg-config" ,pkg-config)
+                   ("autoconf" ,autoconf)
+                   ("libedit" ,libedit)
+                   ("libtool" ,libtool)
+                   ("automake" ,automake)))
+  (inputs `(("ncurses" ,ncurses)
+	    ("libuuid" ,util-linux "lib")
+	    ("tegra-eeprom-tool" ,tegra-eeprom-tool)
+	    ("zlib" ,zlib)))
+  (supported-systems '("armhf-linux" "aarch64-linux"))
+  (synopsis "Boot-related tools for Tegra platforms")
+  (description "This package contains boot-related tools for Tegra platforms,
+which augment and/or replace the boot control and bootloader upgrade tools:
+@enumerate
+@item tegra-bootinfo
+@item tegra-bootloader-update
+@item tegra-boot-control
+@end enumerate")
+  (home-page "https://github.com/OE4T/tegra-boot-tools")
   (license license:expat)))
