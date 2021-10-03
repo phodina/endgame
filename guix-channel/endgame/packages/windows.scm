@@ -44,3 +44,32 @@ part of the functionality of the Microsoft tool @code{signtool.exe} - more
 exactly the Authenticode signing and timestamping")
   (home-page "https://github.com/mtrojnar/osslsigncode")
   (license license:gpl3+)))
+
+; https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=nsis
+
+(define-public nsis
+  (package
+    (name "nsis")
+    (version "3.07")
+    (source (origin
+              (method url-fetch)
+              (uri (string-append "http://downloads.sourceforge.net/project/nsis/NSIS%203/" version "/" name "-" version "-src.tar.bz2"))
+              (sha256
+                (base32
+                  "1fpg2l89qfjwyanvid9rs7kk3ajq2j7f280xv565p649hlwd7yjd"))))
+    (build-system scons-build-system)
+;    (arguments
+;     `(#:configure-flags (list "--with-systemd-unit-dir=no" "--with-systemd-journal=no" "--disable-doc")
+;       #:phases
+;       (modify-phases %standard-phases
+;         (add-after 'unpack 'xml-validation
+;           (lambda* (#:key inputs #:allow-other-keys)
+;             (let ((local (string-append (assoc-ref inputs "docbook-xml") "/xml/dtd/docbook")))
+	     ; substitute in order to validate locally due to network restriction
+  (native-inputs `(("mingw-w64-x86_64" ,mingw-w64-x86_64)))
+  (synopsis "Professional system to create Windows installers")
+  (description "NSIS (Nullsoft Scriptable Install System) is a professional
+system to create Windows installers. It is designed to be as small and flexible
+as possible.")
+  (home-page "http://nsis.sourceforge.net")
+  (license license:zlib)))
