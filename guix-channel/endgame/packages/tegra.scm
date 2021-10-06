@@ -1,6 +1,8 @@
 (define-module (endgame packages tegra)
   #:use-module (guix packages)
   #:use-module (gnu packages)
+  #:use-module (gnu packages base)
+  #:use-module (gnu packages bash)
   #:use-module (gnu packages autotools)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages libedit)
@@ -73,4 +75,50 @@ which augment and/or replace the boot control and bootloader upgrade tools:
 @item tegra-boot-control
 @end enumerate")
   (home-page "https://github.com/OE4T/tegra-boot-tools")
+  (license license:expat)))
+
+(define-public cbootimage
+(package
+  (name "cbootimage")
+  (version "1.8")
+  (source (origin
+            (method git-fetch)
+            (uri (git-reference
+             (url "https://github.com/NVIDIA/cbootimage")
+             (commit (string-append "v" version))))
+            (file-name (git-file-name name version))
+            (sha256
+             (base32
+              "1cvk2py221mmdicvsvkscrpzkim64cq5qxjzad7gvxm4561p41mb"))))
+  (build-system gnu-build-system)
+  (arguments
+    `(#:phases
+      (modify-phases %standard-phases
+        (add-after 'unpack 'patch-/bin/sh
+          (lambda* _
+            (substitute* "autogen.sh"
+              (("/bin/sh") (which "sh")))
+            (substitute* "configure.ac"
+              (("/bin/sh") (which "sh"))))))))
+  (native-inputs `(("bash" ,bash)
+		   ("pkg-config" ,pkg-config)
+                   ("autoconf" ,autoconf)
+                   ("libedit" ,libedit)
+                   ("libtool" ,libtool)
+                   ("automake" ,automake)))
+  (inputs `(("ncurses" ,ncurses)
+            ("libuuid" ,util-linux "lib")
+            ("tegra-eeprom-tool" ,tegra-eeprom-tool)
+            ("zlib" ,zlib)))
+  (supported-systems '("armhf-linux" "aarch64-linux"))
+  (synopsis "Tegra BCT and bootable flash image generator/compiler")
+  (description "This package provides a tool which compiles BCT (Boot
+Configuration Table) images to place into the boot flash of a Tegra-based
+device:
+@enumerate
+@item Compile a textual representation of a BCT into a binary image.
+@item Generate an entire boot image from a previously compiled BCT and a
+   bootloader binary.
+@end enumerate")
+  (home-page "https://github.com/NVIDIA/cbootimage")
   (license license:expat)))
