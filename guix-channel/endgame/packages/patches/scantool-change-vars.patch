@@ -1,0 +1,228 @@
+From d75884b77d3196564575b8f3ad87eb70aabb645d Mon Sep 17 00:00:00 2001
+From: Michel Zou <xantares09@hotmail.com>
+Date: Fri, 29 May 2020 10:25:35 +0200
+Subject: [PATCH 1/2] Remove is_not_genuine_scan_tool
+
+---
+ globals.h   | 3 ---
+ main.c      | 2 --
+ main_menu.c | 4 ----
+ reset.c     | 1 -
+ sensors.c   | 4 ----
+ 5 files changed, 14 deletions(-)
+
+diff --git a/globals.h b/globals.h
+index 06434bc..3e5e35f 100644
+--- a/globals.h
++++ b/globals.h
+@@ -36,9 +36,6 @@
+ #define C_GRAY          50
+ #define C_LIGHT_GRAY    55
+ 
+-//
+-int is_not_genuine_scan_tool;
+-
+ // Options
+ int system_of_measurements;
+ int display_mode;
+diff --git a/main.c b/main.c
+index fe938e2..4b68dce 100644
+--- a/main.c
++++ b/main.c
+@@ -48,8 +48,6 @@ static void init()
+ {
+    char temp_buf[256];
+ 
+-   is_not_genuine_scan_tool = FALSE;
+-   
+    /* initialize some varaibles with default values */
+    if (asprintf(&options_file_name, "%s/.scantoolrc", getenv("HOME")) < 0) {
+       perror("asprintf");
+diff --git a/main_menu.c b/main_menu.c
+index bf8473d..76a6df6 100644
+--- a/main_menu.c
++++ b/main_menu.c
+@@ -298,9 +298,5 @@ int button_desc_proc(int msg, DIALOG *d, int c)
+ 
+ int genuine_proc(int msg, DIALOG *d, int c)
+ {
+-   if (msg == MSG_IDLE)
+-      if (is_not_genuine_scan_tool)
+-         return D_CLOSE;
+-   
+    return D_O_K;
+ }
+diff --git a/reset.c b/reset.c
+index b9f4c24..c4aab37 100644
+--- a/reset.c
++++ b/reset.c
+@@ -283,7 +283,6 @@ int Reset_get_reply_to_detect_protocol(char *response)
+ /* We don't care if it's a clone; let it run anyway. */
+ int Reset_handle_clone()
+ {
+-   is_not_genuine_scan_tool = FALSE;
+    return RESET_START_ECU_TIMER;
+ }
+ 
+diff --git a/sensors.c b/sensors.c
+index 187fac5..b46bff4 100644
+--- a/sensors.c
++++ b/sensors.c
+@@ -1493,9 +1493,5 @@ void clr_time_formula(int data, char *buf)
+ 
+ int genuine_proc(int msg, DIALOG *d, int c)
+ {
+-   if (msg == MSG_IDLE)
+-      if (is_not_genuine_scan_tool == TRUE)
+-         return D_CLOSE;
+-   
+    return D_O_K;
+ }
+
+From 30f31cb6cf084be0f2db20fa3f7432599584e270 Mon Sep 17 00:00:00 2001
+From: Michel Zou <xantares09@hotmail.com>
+Date: Fri, 29 May 2020 10:36:26 +0200
+Subject: [PATCH 2/2] Declare globals as extern
+
+---
+ error_handlers.c |  1 +
+ error_handlers.h |  2 +-
+ globals.h        | 15 +++++----------
+ main.c           |  8 ++++++++
+ options.c        |  3 +++
+ serial.c         |  4 +++-
+ serial.h         |  6 +++---
+ 7 files changed, 24 insertions(+), 15 deletions(-)
+
+diff --git a/error_handlers.c b/error_handlers.c
+index 2d39b47..2a2ab10 100644
+--- a/error_handlers.c
++++ b/error_handlers.c
+@@ -2,6 +2,7 @@
+ #include "globals.h"
+ #include "error_handlers.h"
+ 
++char temp_error_buf[256];
+ 
+ void fatal_error(char *msg)
+ {
+diff --git a/error_handlers.h b/error_handlers.h
+index a2502c2..268c98c 100644
+--- a/error_handlers.h
++++ b/error_handlers.h
+@@ -1,7 +1,7 @@
+ #ifndef ERROR_HANDLERS_H
+ #define ERROR_HANDLERS_H
+ 
+-char temp_error_buf[256];
++extern char temp_error_buf[256];
+ 
+ void fatal_error(char *msg);
+ 
+diff --git a/globals.h b/globals.h
+index 3e5e35f..d4ecccf 100644
+--- a/globals.h
++++ b/globals.h
+@@ -37,17 +37,12 @@
+ #define C_LIGHT_GRAY    55
+ 
+ // Options
+-int system_of_measurements;
+-int display_mode;
++extern int system_of_measurements;
++extern int display_mode;
+ 
+ // File names
+-char *options_file_name;
+-char *data_file_name;
+-char *code_defs_file_name;
+-char log_file_name[20];
+-#ifdef LOG_COMMS
+-char comm_log_file_name[20];
+-#endif
++extern char *options_file_name;
++extern char *code_defs_file_name;
+ 
+ void write_log(const char *log_string);
+ 
+@@ -55,6 +50,6 @@ void write_log(const char *log_string);
+ void write_comm_log(const char *marker, const char *data);
+ #endif
+ 
+-DATAFILE *datafile;
++extern DATAFILE *datafile;
+ 
+ #endif
+diff --git a/main.c b/main.c
+index 4b68dce..5941038 100644
+--- a/main.c
++++ b/main.c
+@@ -16,6 +16,13 @@ END_COLOR_DEPTH_LIST
+ 
+ #define WINDOW_TITLE   "ScanTool.net " SCANTOOL_VERSION_EX_STR
+ 
++int display_mode;
++char *code_defs_file_name;
++char log_file_name[20];
++#ifdef LOG_COMMS
++char comm_log_file_name[20];
++#endif
++DATAFILE *datafile;
+ 
+ void write_log(const char *log_string)
+ {
+@@ -47,6 +54,7 @@ void write_comm_log(const char *marker, const char *data)
+ static void init()
+ {
+    char temp_buf[256];
++   char *data_file_name;
+ 
+    /* initialize some varaibles with default values */
+    if (asprintf(&options_file_name, "%s/.scantoolrc", getenv("HOME")) < 0) {
+diff --git a/options.c b/options.c
+index 7ec604a..873bafd 100644
+--- a/options.c
++++ b/options.c
+@@ -30,6 +30,9 @@
+    #define DEFAULT_BAUD_RATE               BAUD_RATE_115200
+ #endif
+ 
++int system_of_measurements;
++char *options_file_name;
++
+ typedef struct
+ {
+    int option_value;
+diff --git a/serial.c b/serial.c
+index 03891d2..9d556c6 100644
+--- a/serial.c
++++ b/serial.c
+@@ -24,7 +24,9 @@
+ #define TX_TIMEOUT_MULTIPLIER    0
+ #define TX_TIMEOUT_CONSTANT      1000
+ 
+-
++volatile int serial_time_out;
++volatile int serial_timer_running;
++struct COMPORT comport;
+ 
+ //timer interrupt handler for sensor data
+ static void serial_time_out_handler()
+diff --git a/serial.h b/serial.h
+index 1ff29ee..bc54807 100644
+--- a/serial.h
++++ b/serial.h
+@@ -77,10 +77,10 @@ const char *get_protocol_string(int interface_type, int protocol_id);
+ int display_error_message(int error, int retry);
+ 
+ // variables
+-volatile int serial_time_out;
+-volatile int serial_timer_running;
++extern volatile int serial_time_out;
++extern volatile int serial_timer_running;
+ 
+-struct COMPORT {
++extern struct COMPORT {
+    int number;
+    int baud_rate;
+    int status;    // READY, NOT_OPEN, USER_IGNORED
