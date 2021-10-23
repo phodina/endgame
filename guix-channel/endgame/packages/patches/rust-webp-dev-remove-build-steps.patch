@@ -1,0 +1,52 @@
+From f1aec38ccd18cf7793513eb17eb3e591f1d32cff Mon Sep 17 00:00:00 2001
+From: Petr Hodina <phodina@protonmail.com>
+Date: Sat, 23 Oct 2021 13:48:09 +0200
+Subject: [PATCH] Remove build steps
+
+
+diff --git a/build.rs b/build.rs
+index 5d2a2c7..5a85d54 100644
+--- a/build.rs
++++ b/build.rs
+@@ -127,11 +127,6 @@ fn cpy<P: AsRef<Path>, Q: AsRef<Path>>(from: P, to: Q) {
+ // WEBP PATHS
+ ///////////////////////////////////////////////////////////////////////////////
+ 
+-pub const WEBP_STATIC_LIBS: &[(&str, &str)] = &[
+-    ("webp", "./src/libwebp.a"),
+-    ("webpdemux", "./src/demux/libwebpdemux.a"),
+-];
+-
+ pub const WEBP_HEADERS: &[&str] = &[
+     "src/webp/decode.h",
+     "src/webp/encode.h",
+@@ -145,10 +140,7 @@ pub const WEBP_HEADERS: &[&str] = &[
+ fn build() {
+     let out_path = out_dir();
+     // SETUP
+-    extract_tar_file("archive/webmproject-libwebp-8bac456.v1.0.3.tar.gz", &out_path);
+     let source_path = out_path.join("webmproject-libwebp-8bac456");
+-    // BUILD
+-    run_make(&source_path, "makefile.unix");
+     // LINK
+     println!("cargo:rustc-link-search=native={}", {
+         source_path
+@@ -156,15 +148,6 @@ fn build() {
+             .to_str()
+             .expect("PathBuf as str")
+     });
+-    println!("cargo:rustc-link-search=native={}", {
+-        source_path
+-            .join("src/demux")
+-            .to_str()
+-            .expect("PathBuf as str")
+-    });
+-    for (name, _) in WEBP_STATIC_LIBS {
+-        println!("cargo:rustc-link-lib=static={}", name);
+-    }
+     // CODEGEN
+     let codegen = |file_name: &str, headers: &[&str]| {
+         let codegen = bindgen::Builder::default();
+-- 
+2.33.0
+
