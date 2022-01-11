@@ -1,0 +1,166 @@
+#+TITLE: Endgame
+#+AUTHOR: Petr Hodina
+
+#+CAPTION: Infinity Gauntlet
+#+NAME: fig:infinitygauntlet
+[[./assets/gauntlet.jpg]]
+
+* Deprecated: upstreaming packages and moving to [[https://gitlab.com/phodina/endgame][Endgame]]
+This is my config for [[https://www.gnu.org/software/guix][GuixSD]] installation for multiple machines as well package definitions. Therefore, it can also be used as a Guix channel. It provides a quick way for me to install GuixSD very quickly with all of the settings intact (99% of the time ;-).
+
+Please do NOT promote this repository on any official Guix communication channels, such as their mailing lists or IRC channel, even in response to support requests!  This is to show respect for the Guix project’s [[http://www.gnu.org/distros/free-system-distribution-guidelines.html][strict policy]] against recommending nonfree software, and to avoid any unnecessary hostility.
+
+* Why GuixSD?
+Guix has a lot of good stuff a power user may look for. Here are the following features I find very attractive:
+
+- Declarative configurations which enables easier reproducibility. The community behind Guix also happens to focus for reproducible and bootstrappable builds which is interesting for me, at least.
+
+- Offers a transparent binary/source installation process. If a package is not available as a binary, it will just build the package for you instead. The best thing about it, it’s optional with just a simple toggle option =(guix package -i $PACKAGE --fallback)=.
+
+- Straightforward packaging process in case you didn’t find the package you’re looking for. This one is a must (in my opinion) if you want to make an independent Linux distro from scratch. You can either contribute to the official package archive or create one yourself.
+
+- Available options include rollback, letting you switch to previous configurations. This is useful for emergency situations where your current configuration doesn’t work and rework your config. Theoretically, you would have a difficult time screwing your system up. [3] You could also go all the way back to your first installation provided you didn’t garbage-collected your system yet.
+
+- It’s a strictly free distro with the ability to add your own proprietary stuff. As far as I know, there’s no mechanism in Guix that prevents you from adding them. That alone makes it a true free distro for me: the freedom to add your own garbage.
+
+* Warning
+This channel does not endorse any non-free application. We believe it is non-ethical, harmful to software development and restricts the users freedom. See the [[https://www.gnu.org/philosophy/free-sw.en.html][GNU philosophy]] for a more thorough discussion.
+
+Those packages are provided as a last resort, should none of the official Guix packages work for you.
+You should understand the implication of using non-free software.  Some of those implications include:
+
+- Endorsement of non-free products and the perpetration of a culture of restriction on liberties.
+- Non-free software cannot (or hardly) be audited: it can potentially spy on you, destroy or steal your data.
+
+As a minimal security measure, it’s heavily recommended to run any non-free software inside a container.
+
+* Getting started
+Before you can get this setup, there are some prerequisites to do:
+- You’ve decided for a [[https://guix.gnu.org/manual/en/html_node/Manual-Installation.html][manual installation]] and already in a shell.
+- The partitions are already setup and mounted in /mnt/ as the root.
+- Copied this repository (git, ssh, usb drive, etc.) to the target machine
+- Choosing the machine from the section below and running the command from the code block
+
+* Machines
+It's highly recommended to install [[https://github.com/astahlman/ob-async][ob-async]] in order to run the builds asynchronously and not to freeze the Emacs UI.
+
+Pick the machine, build the system image.
+
+** [endgame/machine/rocinante.scm][Rocinante]
+#+CAPTION: Lenovo Thinkpad x230
+#+NAME:   fig:thinkpadx230
+[[./assets/lenovo-thinkpad-x230.jpg]]
+
+#+begin_src shell :dir guix-channel
+guix system build ../system-config/machine/rocinante.scm -L.. -L.
+#+end_src
+
+** [endgame/machine/zen.scm][Zen]
+#+CAPTION: Asus Zenbook x303
+#+NAME:   fig:zenbookx303
+[[./assets/asus-zenbook-x303.jpg]]
+
+#+begin_src shell :dir guix-channel
+guix system build ../system-config/machine/zen.scm -L.. -L.
+#+end_src
+
+** [endgame/machine/asgard.scm][Asgard]
+#+CAPTION: Dell Precision 5550
+#+NAME:   fig:precision5550
+[[./assets/dell-precision-5550.jpg]]
+
+#+begin_src shell :dir guix-channel
+guix system build ../system-config/machine/asgard.scm -L.. -L.
+#+end_src
+
+** [endgame/machine/werewolf.scm][Werewolf]
+#+CAPTION: Dell Precision T5550
+#+NAME:   fig:precisionT5550
+[[./assets/dell-precision-t5500.jpg]]
+
+#+begin_src shell :dir guix-channel
+guix system build ../system-config/machine/werewolf.scm -L.. -L.
+#+end_src
+
+* Project structure
+#+begin_lang options
+endgame/
+├── assets
+├── channels.txt
+├── conf
+├── COPYING
+├── guix-channel
+├── guix-installer
+├── packages -> guix-channel/endgame/packages
+├── PATCHES.org
+├── README.org
+├── services -> guix-channel/endgame/services
+├── system-config
+└── templates
+#+end_lang
+
+** [[./assets][assets]]
+This directory contains all the images and other resources for the documentation purposes.
+
+** [[./conf][conf]]
+Contains the configuration files for various userspace tools and daemons.
+
+** [[./guix-channel][guix-channel]]
+This directory is specified in [[./.guix-channel][.guix-channel]] file, so this repository can be used as a [[https://guix.gnu.org/manual/en/html_node/Channels.html][Guix channel]]. Therefore you might include the following channel definition in you [[~/.config/guix/channels.scm]] file
+ #+begin_src lisp
+(channel
+  (name 'endgame)
+  (url "https://github.com/phodina/endgame")
+  (commit "844b62e353985eb01c2ba65caaea544a64e4c9a0")
+  (introduction
+    (make-channel-introduction
+      "2986adb456f57e5e4e34199bee95664d5368c106"
+        (openpgp-fingerprint
+          "418E BDDC 2C3B 1F72 6844  B7C6 7EBE C331 8DB7 196D"))))
+  #+end_src
+
+** [[./guix-installer][guix-installer]]
+Is a git submodule containing shell script to make an installation GuixiSD ISO image from the [[https://gitlab.com/nonguix/nonguix][nonguix]] channel.
+
+** [[./system-config][system-config]]
+Directory with my system configuration files (for =guix system= commands). General configurations go into [[./system-config/system][system-config/system]] while specific machine cofigurations are placed in [[./system-config/machine][system-config/machine]].
+
+** [[./templates][templates]]
+Contains template definitions for build/install Guix.
+
+* Installing Guix to new machine
+Init the submodule
+#+begin_src shell
+git submodule init
+git submodule update
+#+end_src
+
+Create an ISO with non free drivers
+#+begin_src shell :dir guix-installer
+./build-iso.sh
+#+end_src
+
+** Setup swap file on Btrfs
+#+begin_src shell
+export SWAPFILE=/swap/swapfile
+export SWAPSIZE=8G
+mkdir /swap
+truncate -s 0 ${SWAPFILE}
+chattr +c ${SWAPFILE}
+fallocate -l ${SWAPSIZE} ${SWAPFILE}
+chmod 600 ${SWAPFILE}
+mkswap ${SWAPFILE}
+#+end_src
+* Guix Home
+- Home services have been merged in commit =6ae4644984608b7eff7ab54d3a5787c661d85b2e=
+  TODO rewrite the [[file:home/home.scm][home]] file
+
+* Miscellaneous
+** Nix on GuixSD
+Configure Nix for user
+#+begin_src
+ln -s "/nix/var/nix/profiles/per-user/$USER/profile" ~/.nix-profile
+source /run/current-system/profile/etc/profile.d/nix.sh
+nix-channel --add https://nixos.org/channels/nixpkgs-unstable
+nix-channel --update
+#+end_src
