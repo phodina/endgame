@@ -1,0 +1,1 @@
+sudo ln -s $(guix build fontconfig)/etc/fonts /etc/fonts
