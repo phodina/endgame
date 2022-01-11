@@ -1,0 +1,19 @@
+From 2b62fc899e3a3e880b460fd7c94d9a6a0e7bb76d Mon Sep 17 00:00:00 2001
+From: Petr Hodina <phodina@protonmail.com>
+Date: Sun, 17 Oct 2021 21:59:03 +0200
+Subject: [PATCH] Comment attribute - requires rustc>=1.54.
+
+
+diff --git a/src/lib.rs b/src/lib.rs
+index ad53b2d..86976b3 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -1,4 +1,4 @@
+-#![doc = include_str!("../README.md")]
++//#![doc = include_str!("../README.md")]
+ 
+ pub use atty::Stream;
+ 
+-- 
+2.33.0
+

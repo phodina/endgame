@@ -1,0 +1,21 @@
+From 16a493d310858f8360961abb403b570da9f137ce Mon Sep 17 00:00:00 2001
+From: Petr Hodina <phodina@protonmail.com>
+Date: Mon, 18 Oct 2021 06:13:05 +0200
+Subject: [PATCH] Enable unstable feature.
+
+
+diff --git a/src/lib.rs b/src/lib.rs
+index c147f70..cb3740d 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -14,6 +14,7 @@
+ //
+ // You should have received a copy of the GNU General Public License
+ // along with ESPMonitor.  If not, see <https://www.gnu.org/licenses/>.
++#![feature(duration_zero)]
+ 
+ use crossterm::{
+     event::{self, Event, KeyCode, KeyEvent, KeyModifiers},
+-- 
+2.33.0
+

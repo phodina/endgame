@@ -1,0 +1,22 @@
+From f72f210558c9cc15a5445a86b0fc02ad2490a769 Mon Sep 17 00:00:00 2001
+From: Petr Hodina <phodina@protonmail.com>
+Date: Sun, 17 Oct 2021 20:46:45 +0200
+Subject: [PATCH] Enable unstable features.
+
+
+diff --git a/src/lib.rs b/src/lib.rs
+index 97c9512..90f3945 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -49,6 +49,8 @@
+ //! Supports `NO_COLOR`/`FORCE_COLOR` environment variables, checks if it's a tty, checks
+ //! if it's running in CI (and thus likely supports color), and checks which terminal is being
+ //! used. (Note: requires `supports-colors` feature)
++#![feature(const_if_match)]
++#![feature(const_generics)]
+ #![cfg_attr(not(test), no_std)]
+ #![doc(html_logo_url = "https://jam1.re/img/rust_owo.svg")]
+ #![warn(missing_docs)]
+-- 
+2.33.0
+

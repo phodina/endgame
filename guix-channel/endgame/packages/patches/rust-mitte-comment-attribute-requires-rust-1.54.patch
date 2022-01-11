@@ -1,0 +1,19 @@
+From ce9da0493d8203473e9c038921a0fb84b2396639 Mon Sep 17 00:00:00 2001
+From: Petr Hodina <phodina@protonmail.com>
+Date: Sun, 17 Oct 2021 22:27:53 +0200
+Subject: [PATCH] Comment attribute - requires rust>=1.54
+
+
+diff --git a/src/lib.rs b/src/lib.rs
+index 39f64cc..141158d 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -1,4 +1,4 @@
+-#![doc = include_str!("../README.md")]
++//#![doc = include_str!("../README.md")]
+ #![deny(missing_docs, missing_debug_implementations, nonstandard_style)]
+ #![warn(unreachable_pub, rust_2018_idioms)]
+ 
+-- 
+2.33.0
+
